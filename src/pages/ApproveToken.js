@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
-const TransferToken = ({
+const ApproveToken = ({
   address,
   contract,
   provider,
@@ -15,8 +15,8 @@ const TransferToken = ({
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const actionTransfer = () => {
-    // Transfer token
+  const actionApprove = () => {
+    // Approve token
     if (data.value <= 0) {
       alert("Invalid Token.");
       return;
@@ -29,13 +29,13 @@ const TransferToken = ({
       try {
         const value = Number(data.value) * 10 ** Number(tokenInfo.decimals);
         contract._methods
-          .transfer(data.account, value)
+          .approve(data.account, value)
           .send({ from: address })
           .on("transactionHash", function (hash) {
-            console.log("hash : ", hash);
+            console.log("approve hash : ", hash);
           })
           .on("receipt", function (receipt) {
-            console.log("receipt : ", receipt);
+            console.log("approve receipt : ", receipt);
             setReload(!reload);
             setData({
               account: "",
@@ -43,21 +43,21 @@ const TransferToken = ({
             });
           })
           .on("error", function (error) {
-            console.log("error : ", error);
+            console.log("approve error : ", error);
           });
       } catch (error) {
-        console.log("Error actionTransfer : ", error);
+        console.log("Error actionApprove : ", error);
       }
     }
   };
   return (
     <div className="my-5">
-      <h2>Transfer</h2>
+      <h2>Approve</h2>
       <Row className="gap-1">
         <Col md={4}>
           <Form.Control
             type="text"
-            placeholder="To account"
+            placeholder="Spender"
             name="account"
             value={data.account}
             onChange={(e) => handleChange(e)}
@@ -66,18 +66,18 @@ const TransferToken = ({
         <Col md={4}>
           <Form.Control
             type="text"
-            placeholder="Value"
+            placeholder="Amount"
             name="value"
             value={data.value}
             onChange={(e) => handleChange(e)}
           />
         </Col>
         <Col>
-          <Button onClick={() => actionTransfer()}>Transfer</Button>
+          <Button onClick={() => actionApprove()}>Approve</Button>
         </Col>
       </Row>
     </div>
   );
 };
 
-export default TransferToken;
+export default ApproveToken;
