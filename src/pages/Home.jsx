@@ -4,6 +4,7 @@ import { useAuth } from "../Hooks/useAuth";
 import { Link } from "react-router-dom";
 import TransferToken from "./TransferToken";
 import ApproveToken from "./ApproveToken";
+import Allowance from "./Allowance";
 const Home = () => {
   const [tokenInfo, settokenInfo] = useState({
     name: "",
@@ -101,6 +102,16 @@ const Home = () => {
         setReload={setReload}
       />
       <hr />
+      <Allowance
+        address={address}
+        contract={contract}
+        provider={provider}
+        tokenInfo={tokenInfo}
+        reload={reload}
+        setReload={setReload}
+      />
+      <hr />
+
       <div className="my-5">
         <h3>Transactions</h3>
         <Table striped>
