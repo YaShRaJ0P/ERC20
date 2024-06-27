@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import TransferToken from "./TransferToken";
 import ApproveToken from "./ApproveToken";
 import Allowance from "./Allowance";
+import TransferFrom from "./TransferFrom";
 const Home = () => {
   const [tokenInfo, settokenInfo] = useState({
     name: "",
@@ -22,7 +23,9 @@ const Home = () => {
       const tokenName = await contract._methods.name().call();
       const tokenSymbol = await contract._methods.symbol().call();
       const tokenTotalSupply = await contract._methods.totalSupply().call();
-      const tokenBalance = await contract._methods.balanceOf(address).call();
+      const tokenBalance = address
+        ? await contract._methods.balanceOf(address).call()
+        : 0;
       const tokenDecimals = await contract._methods.decimals().call();
       settokenInfo({
         name: tokenName,
@@ -111,6 +114,15 @@ const Home = () => {
         setReload={setReload}
       />
       <hr />
+
+      <TransferFrom
+        address={address}
+        contract={contract}
+        provider={provider}
+        tokenInfo={tokenInfo}
+        reload={reload}
+        setReload={setReload}
+      />
 
       <div className="my-5">
         <h3>Transactions</h3>
